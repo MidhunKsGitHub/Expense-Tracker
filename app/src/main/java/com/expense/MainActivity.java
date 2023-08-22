@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         expenseFragment = new ExpenseFragment();
-        addFragment = new AddFragment();
+        addFragment = new ShowFragment();
         profileFragment = new ProfileFragment();
 
         fm = getSupportFragmentManager();

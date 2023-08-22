@@ -3,6 +3,7 @@ package com.expense;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -36,6 +37,12 @@ public class AddExpenseActivity extends AppCompatActivity {
     List<String> expenseList;
     List<String> categoryList;
 
+    String cat_expense;
+
+
+    int count;
+    String ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,23 +52,38 @@ public class AddExpenseActivity extends AppCompatActivity {
         MidhunUtils.setStatusBarIcon(AddExpenseActivity.this, true);
         allExpenseList = new ArrayList<>();
         loadData();
-        binding.inputCategory .setVisibility(View.GONE);
+        count = allExpenseList.size() + 1;
+        ID = String.valueOf(count);
+
         expenseList = new ArrayList<>();
         expenseList.add("Income");
         expenseList.add("Expense");
 
-        categoryList=new ArrayList<>();
+        categoryList = new ArrayList<>();
         categoryList.add("Food");
         categoryList.add("Shopping");
         categoryList.add("Entertainment");
         categoryList.add("Travel");
-        categoryList.add("Others");
+        categoryList.add("Recharge");
+        categoryList.add("Gifts");
+        categoryList.add("Clothes");
+        categoryList.add("Bills");
 
         ArrayAdapter adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.drop_down_custom, expenseList);
         binding.expenseType.setAdapter(adapter);
 
         ArrayAdapter adapter1 = new ArrayAdapter<>(getApplicationContext(), R.layout.drop_down_custom, categoryList);
         binding.categoryType.setAdapter(adapter1);
+
+        if (getIntent().getExtras().getString("type").equalsIgnoreCase("expense")) {
+            cat_expense = getIntent().getExtras().getString("cat");
+            binding.expenseType.setText("Expense");
+            binding.categoryType.setText(cat_expense);
+
+        } else {
+            binding.expenseType.setText("Income");
+        }
+
 
         binding.expenseType.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,12 +93,6 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (s.toString().equalsIgnoreCase("expense")) {
-                    binding.inputCategory.setVisibility(View.VISIBLE);
-                } else {
-                    binding.inputCategory.setVisibility(View.GONE);
-                }
 
 
             }
@@ -120,14 +136,16 @@ public class AddExpenseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                allExpenseList.add(new AllExpense(binding.amountTxt.getText().toString(), binding.expenseType.getText().toString()));
+                allExpenseList.add(new AllExpense(binding.amountTxt.getText().toString(), binding.expenseType.getText().toString(), binding.categoryType.getText().toString(), binding.dateTxt.getText().toString(), binding.descTxt.getText().toString(), ID));
                 allListAdpater = new AllListAdpater(getApplicationContext(), allExpenseList);
-                saveData();
+               saveData();
+
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }
 
-    private void loadData() {
+    public void loadData() {
         // method to load arraylist from shared prefs
         // initializing our shared prefs with name as
         // shared preferences.
@@ -148,7 +166,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         }
     }
 
-    private void saveData() {
+    public void saveData() {
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
 

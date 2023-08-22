@@ -2,16 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon_expense_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_icon_expense_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Expense"
         tools:targetApi="31">
+        <activity
+            android:name=".SigninActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".ListBankAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BankAccountDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExpenseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SmsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditActivity"
+            android:exported="false" />
         <activity
             android:name=".AddActivity"
             android:exported="false" />
@@ -29,7 +56,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>
